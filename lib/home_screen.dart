@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text('This is a Text', textScaler: TextScaler.linear(2)),
             InterstitialAdWidget(),
             RewardAdWidget(),
-            BannerAdWidget(),
           ],
         ),
       ),

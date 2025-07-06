@@ -12,6 +12,7 @@ class RewardAdWidget extends StatefulWidget {
 class _RewardAdWidgetState extends State<RewardAdWidget> {
   late RewardedAd _rewardedAd;
   bool _isRewardedAdReady = false;
+  var rewardCoins = 0;
   @override
   void initState() {
     super.initState();
@@ -30,7 +31,7 @@ class _RewardAdWidgetState extends State<RewardAdWidget> {
         },
         onAdFailedToLoad: (LoadAdError error) {
           print('Rewared ad failed to load $error');
-          _isRewardedAdReady = false;
+         // _isRewardedAdReady = false;
         },
       ),
     );
@@ -42,8 +43,9 @@ class _RewardAdWidgetState extends State<RewardAdWidget> {
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
           print('User earned: ${reward.amount} ${reward.type}');
 
-          // Grant reward here
-          
+          setState(() {
+            rewardCoins += reward.amount.toInt();
+          });
         },
       );
     } else {
@@ -53,16 +55,24 @@ class _RewardAdWidgetState extends State<RewardAdWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     super.dispose();
     _rewardedAd.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: _isRewardedAdReady ? _showRewardedAd : null,
-      child: Text('Show Rewarded Ad'),
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: _isRewardedAdReady ? _showRewardedAd : null,
+          child: Text('Show Rewarded Ad'),
+        ),
+        Text(
+          'Reward Coins: $rewardCoins',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }
